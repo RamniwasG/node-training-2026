@@ -1,0 +1,126 @@
+1. What is responsible for handling async operations in Node.js?
+A. V8 Engine
+B. libuv
+C. Call Stack
+D. Garbage Collector
+Ans: B
+
+2. Which of the following runs on the main thread?
+A. File system operations
+B. Crypto hashing (async)
+C. JavaScript execution (call stack)
+D. Thread pool tasks
+Ans: C
+
+3. What happens when you use fs.readFileSync?
+A. It goes to thread pool
+B. It is non-blocking
+C. It blocks the event loop
+D. It runs in callback queue
+Ans: C
+
+4. Which API uses the thread pool internally?
+A. setTimeout
+B. Promise
+C. fs.readFile
+D. process.nextTick
+Ans: C
+
+5. Order of execution (simplified)?
+A. Call Stack → Callback Queue → Event Loop
+B. Event Loop → Call Stack → Callback Queue
+C. Callback Queue → Call Stack → Event Loop
+D. Call Stack → Event Loop → Callback Queue
+Ans: D
+
+6. Which runs first?
+setTimeout(() => console.log("timeout"), 0);
+Promise.resolve().then(() => console.log("promise"));
+process.nextTick(() => console.log("nextTick"));
+A. timeout → promise → nextTick
+B. nextTick→ promise → timeout
+C. promise → nextTick→ timeout
+D. nextTick→ timeout → promise
+Ans: B
+
+7. What does event loop do?
+A. Executes JS code
+B. Moves callbacks to call stack
+C. Handles memory
+D. Creates threads
+Ans: B
+
+8. Which phase handles setTimeout?
+A. Poll
+B. Check
+C. Timer
+D. Close
+Ans: C
+
+9. Which phase handles setImmediate?
+A. Timer
+B. Poll
+C. Check
+D. Close
+Ans: C
+
+10. Why is Node.js considered non-blocking?
+A. It uses multiple threads for JS
+B. It delegates async work to OS/libuv
+C. It avoids callbacks
+D. It uses only promises
+Ans: B
+
+11 —Execution Order Trap
+setImmediate(() => console.log("A"));
+process.nextTick(() => console.log("B"));
+Promise.resolve().then(() => console.log("C"));
+console.log("D");
+What is the output?
+A. D → B → C → A
+B. D → C → B → A
+C. D → B → A → C
+D. D → C → A → B
+Ans: C
+
+12 —Thread Pool Behavior
+const crypto = require("crypto");
+for (let i= 1; i<= 6; i++) {
+    crypto.pbkdf2("pass", "salt", 1000000, 64, "sha512", () => {
+        console.log(i);
+    });
+}
+Assume default configuration.
+Which statement is correct?
+A. All 6 tasks run in parallel simultaneously
+B. Only 1 runs at a time because Node is single-threaded
+C. 4 tasks run in parallel, rest queued
+D. Order of output is always 1 → 6
+Ans: C
+
+13 —nextTickStarvation
+function recursive() {
+    process.nextTick(recursive);
+}
+recursive();
+setTimeout(() => console.log("Timer"), 0);
+What happens?
+A. "Timer" prints after delay
+B. "Timer" prints immediately
+C. Infinite loop blocks event loop, timer never executes
+D. Program crashes immediately
+Ans: C
+
+14 —I/O vs setImmediate
+const fs = require("fs");\
+fs.readFile(__filename, () => {
+    setTimeout(() => console.log("timeout"), 0);
+    setImmediate(() => console.log("immediate"));
+});
+What is the most likely output?
+A. timeout → immediate
+B. immediate → timeout
+C. random order
+D. none executes
+Ans: B
+

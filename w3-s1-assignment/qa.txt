@@ -1,0 +1,15 @@
+Q1. Why does "End" print early?
+Ans: Because fs.readFile is a async operation and will be executed by libuv later after executed every callstack tasks.
+
+Q2. Which part of code runs in background?
+Ans: the callback
+
+Q3. Where does callback go after completion?
+Ans: in callstack
+
+Q4. Will timer run before or after the file read?
+Ans: Before
+
+Q5. Why?
+Ans: Because timers phase is scheduled to run earlier in the event loop cycle than the Poll(I/O callbacks) phase.
+     the order is: setTimeout() callback then fs.readFile callback()
