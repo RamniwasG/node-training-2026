@@ -1,3 +1,4 @@
+const fs = require('fs');
 const crypto = require("crypto");
 process.env.UV_THREADPOOL_SIZE = 2 // can be 2 / 4 / 8
 console.log("default thread pool size: ", process.env.UV_THREADPOOL_SIZE)
@@ -50,3 +51,7 @@ crypto.pbkdf2("password", "salt", 5000000, 50, "sha512", () => {
     console.log("8 done");
     console.log("task 8 end time ", new Date().getMilliseconds())
 });
+
+fs.readFile('./w3-s2-assignment/observation.txt','utf-8', (err, res) => {
+    console.log("====Observation====\n", res)
+})
