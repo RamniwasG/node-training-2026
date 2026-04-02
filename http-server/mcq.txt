@@ -1,0 +1,5 @@
+Q1. When a client sends an HTTP request to a node.js server, what is the most accurate sequence?
+Ans: Browser -> TCP/IP -> libuv -> Event Loop -> HTTP parser -> Callback
+
+Q2. Which statement correctly describe the relationship between packets, buffers and streams?
+Ans: Stream process data in chunks which are stored in buffers, originating from packets
