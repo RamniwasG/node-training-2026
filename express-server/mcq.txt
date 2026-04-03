@@ -1,0 +1,11 @@
+Q1. Which method is used for fetch data from server?
+Ans: GET
+
+Q2. What does app.use() handles?
+Ans: all http methods
+
+Q3. What will req.query will return?
+Ans: Query parameters
+
+Q4. Which is true about route order?
+Ans: First match wins
