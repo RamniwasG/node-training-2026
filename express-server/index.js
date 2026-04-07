@@ -6,19 +6,19 @@ const PORT = 3000
 
 const userRoutes = require('./routes/user')
 
-app.use('/admin', userRoutes)
+app.use('/admin', userRoutes) // does allow all the HTTP methods
+// app.get('/admin/getData', userRoutes) // does allow only get method to hit this url
 
-// commented code below having route order match issue and 
 // routing matching happen exactly not inheritance basic
 
 // app.use('/admin', isAdmin)
 
-// app.use("/getData", (req, res) => {
+// app.get("/admin/getData", (req, res) => {
 //     console.log("data sent")
 //     res.send("data sent")
 // })
 
-// app.use("/deleteData", (req, res) => {
+// app.get("/admin/deleteData", (req, res) => {
 //     console.log("data deleted")
 //     res.send("data deleted")
 // })
@@ -46,10 +46,10 @@ app.delete("/user/:userId", (req, res) => {
     res.send(`User Id: [${req.params.userId}] deleted`)
 })
 
-// app.use("/", (req, res) => {
-//     console.log("first route")
-//     res.send("Welcome to dev APIs")
-// })
+app.use("/", (req, res) => {
+    console.log("unknown route")
+    res.status(404).send("404, route not found!")
+})
 
 app.listen(PORT, () => {
     console.log("server is running at " + PORT)
