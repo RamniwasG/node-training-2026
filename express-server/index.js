@@ -5,8 +5,12 @@ const PORT = 3000
 // const { isAdmin } = require('./middleware/auth')
 
 const userRoutes = require('./routes/user')
+const dbConnectRoute = require('./routes/db')
 
+// Routes
+app.use('/', dbConnectRoute)
 app.use('/admin', userRoutes) // does allow all the HTTP methods
+
 // app.get('/admin/getData', userRoutes) // does allow only get method to hit this url
 
 // routing matching happen exactly not inheritance basic
@@ -49,6 +53,14 @@ app.delete("/user/:userId", (req, res) => {
 app.use("/", (req, res) => {
     console.log("unknown route")
     res.status(404).send("404, route not found!")
+})
+
+app.use((err, req, res, next) => {
+    console.log(err.message)
+    res.json({
+        success: false,
+        message: err.message || "Internal Server Error"
+    })
 })
 
 app.listen(PORT, () => {
