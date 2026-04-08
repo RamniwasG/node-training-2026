@@ -37,12 +37,15 @@ router.post('/login', (req, res) => {
 
 router.post('/create', isAuthorized, asyncHandler(async(req, res) => {
     const { username, password, role } =  req.body
-    usersList.unshift({
-        id: usersList.length,
-        username,
-        password,
-        role: role || 'user'
-    })
+    usersList = [
+        {
+            id: usersList.length + 1,
+            username,
+            password,
+            role: role || 'user'
+        },
+        ...usersList
+    ]
     res.json({
         success: true,
         message: "user created successfully!",
