@@ -1,15 +1,15 @@
 const express = require('express')
-const { isAdmin } = require('../middlewares/auth')
+const { isAuthenticated } = require('../middlewares/auth')
 const asyncHandler = require('./../middlewares/asyncHandler');
 const AppError = require('../utils/AppError');
 
 const router = express()
 
-router.get('/getData', isAdmin, (req, res) => {
+router.get('/getData', isAuthenticated, (req, res) => {
     console.log("data sent")
     res.send("data retrieved ")
 })
-router.get('/deleteData', isAdmin, (req, res) => {
+router.get('/deleteData', isAuthenticated, (req, res) => {
     console.log("deleted")
     res.send("delete data ")
 })
