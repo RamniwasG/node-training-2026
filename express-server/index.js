@@ -3,6 +3,7 @@ const app = express()
 const PORT = 3000
 
 // db connection
+const mongoConnect = require('./config/connection');
 const dbConnectRoute = require('./routes/db_connect')
 const errorHandler = require('./middlewares/errorHandler');
 
@@ -10,6 +11,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const testUserRoutes = require('./routes/testUser')
 const userRoutes = require('./routes/user')
 const assignUserRoutes = require('./routes/assignmentUser')
+const mongoUserRoutes = require('./routes/mongo_user')
 
 // Routes
 app.use(express.json())
@@ -19,6 +21,7 @@ app.use(dbConnectRoute)
 app.use('/testuser', testUserRoutes)
 app.use('/admin', userRoutes) // does allow all the HTTP methods
 app.use('/user', assignUserRoutes)
+app.use('/muser', mongoUserRoutes)
 
 // app.get('/admin/getData', userRoutes) // does allow only get method to hit this url
 
@@ -47,6 +50,12 @@ app.use('/user', assignUserRoutes)
 // })
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-    console.log("server is running at " + PORT)
+mongoConnect()
+.then(() => {
+    console.log("DB connected!")
+    app.listen(PORT, () => {
+        console.log("Server is running at " + PORT)
+    })
+}).catch(err => {
+    console.log("conection failed!")
 })
