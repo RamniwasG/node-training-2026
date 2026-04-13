@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
-const PORT = 3000
+require('dotenv').config({ quiet: true })
+
+const PORT = process.env.PORT || 3000
 
 // db connection
 const mongoConnect = require('./config/connection');
@@ -12,6 +14,7 @@ const testUserRoutes = require('./routes/testUser')
 const userRoutes = require('./routes/user')
 const assignUserRoutes = require('./routes/assignmentUser')
 const mongoUserRoutes = require('./routes/mongo_user')
+const mUserAssignmentRoutes = require('./routes/muserAssRoutes')
 
 // Routes
 app.use(express.json())
@@ -22,6 +25,7 @@ app.use('/testuser', testUserRoutes)
 app.use('/admin', userRoutes) // does allow all the HTTP methods
 app.use('/user', assignUserRoutes)
 app.use('/muser', mongoUserRoutes)
+app.use('/muser_assignment', mUserAssignmentRoutes);
 
 // app.get('/admin/getData', userRoutes) // does allow only get method to hit this url
 
