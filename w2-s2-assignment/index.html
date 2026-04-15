@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            h3, p {
+                text-align: center;
+            }
+            p.disclaimer {
+                color: chocolate;
+                text-decoration: underline;
+            }
+            p.note {
+                color: blue;
+            }
+        </style>
+        <script src="main.js"></script>
+        <script>
+            console.log("==== Browser ====")
+            console.log("this ", this)
+            console.log("window ", window)
+            console.log("self ", self)
+            // console.log("global ", global) // ReferenceError --> global is not defined
+            console.log("globalThis", globalThis)
+            console.log("this === window = ", this === window) // true
+            console.log("window === self =", window === self) // true
+            console.log("window === globalThis =", window === globalThis) // true
+            // console.log("window === global =", window === global) // ReferenceError -> global is not defined
+
+            // Global variables
+            var x = 10;
+            let y = 20;
+            console.log(window.x) // 10
+            console.log(window.y) // undefined
+        </script>
+        <script type="module">
+            console.log("=== module/strict mode ====")
+            console.log("this in module or strict mode : ", this) // undefined
+        </script>
+    </head>
+    <body>
+        <h3>Experiments with global, this, self, window and globalThis variables on browser</h3>
+        <hr/>
+        <p class="disclaimer">( Please open developer console to see the experiment result! )</p>
+        <h4>Key points to remember:</h4>
+        <ul>
+            <li>All three: <mark>this, window and self points to the same object in main thread(browser) and globalThis as well</mark> except global</li>
+            <li>Only var attached to global object not let or const</li>
+            <li>in webworker, <mark>these three self, this and globalThis pointes to same object(WorkerGlobalScope)</mark> and global and window are not defined(ReferenceError)</li>
+        </ul>
+        <br><br><br>
+        <p class="note">To see the web worker experiment please clone this repo: <a href="https://github.com/RamniwasG/node-training-2026" target="_blank">repository link</a> and open this repo in vs code and run live server and visit <a href="http://127.0.0.1:5500/w2-s2-assignment/index.html" target="_blank">http://127.0.0.1:5500/w2-s2-assignment/index.html</a></p>
+    </body>
+</html>
