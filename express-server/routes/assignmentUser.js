@@ -6,13 +6,18 @@ const AppError = require('../utils/AppError');
 
 const router = express()
 
-router.get('/profile', isAuthenticated, asyncHandler(async(req, res) => {
-    res.json({
-        success: true,
-        message: "success!",
-        user: req.user
-    })
-}))
+// Public Routes
+router.post('/login', (req, res) => {
+    console.log(req.body)
+    const { username, password } = req.body
+    const isMatched = usersList.find((user) => 
+        user.username === username && user.password === password)
+
+    if(!isMatched) {
+        throw new AppError("Invalid user!", 401)
+    }
+    res.json({ success: true, message: "user logged in!" })
+})
 
 router.get('/users', asyncHandler(async(req, res) => {
     res.json({
@@ -22,40 +27,25 @@ router.get('/users', asyncHandler(async(req, res) => {
     })
 }))
 
-router.post('/login', (req, res) => {
-    console.log(req.body)
-    const { username, password } = req.body
-    const isMatched = usersList.find((user) => user.username === username && user.password === password)
-    if(!isMatched) {
-        throw new AppError("Invalid user!", 401)
-    }
-    res.json({
-        success: true,
-        message: "user logged in!"
-    })
-})
-
-router.post('/create', isAuthorized, asyncHandler(async(req, res) => {
-    const { username, password, role } =  req.body
-    usersList = [
-        {
-            id: usersList.length + 1,
-            username,
-            password,
-            role: role || 'user'
-        },
-        ...usersList
-    ]
-    res.json({
-        success: true,
-        message: "user created successfully!",
-        users: usersList
-                .filter((user) => user.role !== 'admin')
-                .sort((a,b) => a>b?1:a<b?-1:0)
-    })
+// Protected Routes
+router.get('/profile', isAuthenticated, asyncHandler(async(req, res) => {
+    res.json({ success: true, message: "success!", user: req.user })
 }))
 
-router.delete('/remove/:userId', isAuthorized, asyncHandler(async(req, res) => {
+router.post('/create', 
+    isAuthenticated, 
+    isAuthorized('admin'), 
+    asyncHandler(async(req, res) => {
+    const { username, password, role } =  req.body
+    const newUser = { id: usersList.length + 1, username, password, role: role || 'user' }
+    usersList.unshift(newUser)
+    res.json({ success: true, message: "user created successfully!", users: usersList })
+}))
+
+router.delete('/remove/:userId', 
+    isAuthenticated, 
+    isAuthorized('admin'), 
+    asyncHandler(async(req, res) => {
     const { userId } =  req.params
     const filteredUsers = usersList.filter(user => user.id.toString() !== userId)
     res.json({
