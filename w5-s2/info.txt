@@ -1,1 +1,23 @@
 assignment related code exist in express-server folder
+
+local routes:
+================
+
+Books routes
+
+GET:   http://localhost:3000/muser_assignment/books/getAll // get all books
+POST:  http://localhost:3000/muser_assignment/books/create // create new book
+PATCH: http://localhost:3000/muser_assignment/books/69dccd6e7db5584be7bd8d65 // update book
+DELETE http://localhost:3000/muser_assignment/books/69e0a69f016e41cd2a1488d5 // remove book
+
+Loans routes
+
+GET:   http://localhost:3000/muser_assignment/loans/active?status=true&borrowerEmail=manish@singh.com // get active loans for user manish@singh.com
+
+PATCH: http://localhost:3000/muser_assignment/loan/69e0a86e016e41cd2a1488d7 // update loan status
+
+POST:  http://localhost:3000/muser_assignment/loans/create
+    body: {
+        "bookId": "69dccd6e7db5584be7bd8d65",
+        "borrowerEmail": "manish@singh.com"
+    }
