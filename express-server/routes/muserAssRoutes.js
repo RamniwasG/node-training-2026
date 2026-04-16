@@ -1,6 +1,4 @@
 const express = require('express')
-const { isAuthenticated, isAuthorized } = require('../middlewares/auth')
-const asyncHandler = require('./../middlewares/asyncHandler');
 const { getAllBooks, createBook, updateBook, removeBook } = require('../controllers/book');
 const { updateLoan, createLoan, getActiveLoans } = require('../controllers/loan');
 

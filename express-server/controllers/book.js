@@ -1,15 +1,16 @@
 const { generateISBN13 } = require("../utils/helper");
 const Book = require("./../models/Book")
+const asyncHandler = require('./../middlewares/asyncHandler');
 
-const getAllBooks = async (req, res, next) => {
+const getAllBooks = asyncHandler(async (req, res, next) => {
     const books = await Book.find()
     res.json({
         message: 'fetched books successfully!',
         data: books
     })
-}
+})
 
-const createBook = async (req, res, next) => {
+const createBook = asyncHandler(async (req, res, next) => {
     const { title, copiesTotal } = req.body;
     const isbn = generateISBN13()
     const book = await Book.create({
@@ -22,9 +23,9 @@ const createBook = async (req, res, next) => {
         message: 'book created successfully!',
         data: book
     })
-}
+})
 
-const updateBook = async (req, res, next) => {
+const updateBook = asyncHandler(async (req, res, next) => {
     const { bookId } = req.params;
     const updatedBook = await Book.findByIdAndUpdate(
         bookId, 
@@ -39,15 +40,15 @@ const updateBook = async (req, res, next) => {
         message: 'book updated successfully!',
         data: updatedBook
     })
-}
+})
 
-const removeBook = async (req, res, next) => {
+const removeBook = asyncHandler(async (req, res, next) => {
     const { bookId } = req.params;
     await Book.findByIdAndDelete(bookId)
     res.send({
         message: 'book deleted successfully!',
     })
-}
+})
 
 
 module.exports = {
